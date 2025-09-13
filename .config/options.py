@@ -96,5 +96,5 @@ def report():
         str += "yes\n"
     else:
         str += "no\n"
-    print str,
+    print(str, end='')
 
