@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import subprocess as sp
 import re, tempfile
@@ -68,7 +68,7 @@ def svn_is_used():
 
 
 def svn_get_file_list():
-    text = my_check_output('svn info -R'.split())
+    text = my_check_output('svn info -R'.split()).decode('utf-8')
     files = []
     tre = '(?m)^Path: (?P<path>.*)$(.|\s)*?^Node Kind: (?P<type>.*)$'
     for m in re.finditer(tre, text):
@@ -84,7 +84,7 @@ def git_is_used():
 
 
 def git_get_file_list():
-    text = my_check_output('git ls-tree --name-only -r HEAD'.split())
+    text = my_check_output('git ls-tree --name-only -r HEAD'.split()).decode('utf-8')
     files = text.split('\n')
     return files
 

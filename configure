@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import sys
-if sys.version_info < (2, 7):
+if sys.version_info < (3, 0):
     sys.path.insert(0, '.config')
 
 ##########################################################
@@ -73,10 +73,10 @@ class ArgParse(argparse.ArgumentParser):
             raise BaseException("help group %s already exists" % name)
         self.help_groups[name] = super(ArgParse,
             self).add_argument_group(title, description)
-        if name != 'help' and len(name.split()) == 1:
+        if name != 'help' and len(name.split()) == 1 and 'help' in self.help_groups:
             self.add_argument("--help-" + name, group = 'help',
                 action = 'store_true',
-                help = "Help on " + title)
+                help = "Help on " + (title or name))
         if default:
             self.default_group = self.help_groups[name]
         return self.help_groups[name]
@@ -380,7 +380,7 @@ def mc_update():
 
 def mc_makefiles():
     header_text = '## miniconf makefiles ## %d.%d ##\n'
-    header_re = '(?m)^## miniconf makefiles ## (\d+)\.(\d+) ##\n'
+    header_re = r'(?m)^## miniconf makefiles ## (\d+)\.(\d+) ##\n'
     def makefile_needed(dirname):
         x.debug("makefile_needed '%s'", dirname)
         if dirname.split('/')[-1] == '.config':
